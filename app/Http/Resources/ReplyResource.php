@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
-
-class QuestionResource extends JsonResource
+class ReplyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,10 +16,9 @@ class QuestionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'title' => $this->title,
-            'body' => $this->body,
-            'slug' => $this->slug,
-            'category' => new CategoryResource($this->category),
+            'id' => $this->id,
+            'bodi' => $this->body,
+            'question' => new QuestionResource($this->question),
             'user' => new UserResource($this->user),
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
         ];

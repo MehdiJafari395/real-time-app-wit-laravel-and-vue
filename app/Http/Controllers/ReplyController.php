@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
+use App\Models\Reply;
 use Illuminate\Http\Request;
 
 class ReplyController extends Controller
@@ -11,9 +13,10 @@ class ReplyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Question $question)
     {
-        //
+        $replies = $question->replies()->get();
+        dd($replies);
     }
 
     /**

@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
-class CategoryController extends Controller
+class CategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +17,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return $this->successResponse(CategoryResource::collection($categories));
     }
 
     /**
@@ -24,7 +29,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:2|string'
+        ])->validate();
+        $category = Category::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+        return $this->successResponse(new CategoryResource($category));
     }
 
     /**
@@ -33,9 +45,13 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+        $category = Category::where('slug', $slug)->first();
+        if(empty($category)){
+            return $this->errorResponse('The category not found', 404);
+        }
+        return $this->successResponse(new CategoryResource($category));
     }
 
     /**
@@ -47,7 +63,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:2|string'
+        ])->validate();
+
+        $category = Category::find($id);
+        if(empty($category)){
+            return $this->errorResponse('The category not found', 404);
+        }
+        $category->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+        return $this->successResponse(new CategoryResource($category));
     }
 
     /**
@@ -58,6 +86,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        if(empty($category)){
+            return $this->errorResponse('The category not found', 404);
+        }
+
+        $category->delete();
+        return $this->successResponse([], 'The category deleted');
     }
 }
