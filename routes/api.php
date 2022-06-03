@@ -12,6 +12,6 @@ Route::prefix('V1')->group(function (){
     Route::apiResource('/category', CategoryController::class);
     Route::apiResource('/question/{question}/reply', ReplyController::class);
 
-    Route::get('/like', [LikeController::class, 'like']);
-    Route::get('/unlike', [LikeController::class, 'unlike']);
+    Route::get('/like/{reply}', [LikeController::class, 'like']);
+    Route::get('/unlike/{reply}', [LikeController::class, 'unlike']);
 });

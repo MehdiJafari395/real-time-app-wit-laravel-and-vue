@@ -12,10 +12,10 @@ class Reply extends Model
 
     protected  $guarded = ['id'];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
+//    public function getRouteKeyName()
+//    {
+//        return 'slug';
+//    }
 
     public function question()
     {
@@ -25,5 +25,10 @@ class Reply extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function like()
+    {
+        return $this->hasOne(Like::class);
     }
 }

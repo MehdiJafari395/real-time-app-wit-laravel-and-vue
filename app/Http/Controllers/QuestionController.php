@@ -41,9 +41,9 @@ class QuestionController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($id)
     {
-        $question = Question::where('slug', $slug)->first();
+        $question = Question::find($id);
 
         if(empty($question)){
             return $this->errorResponse('The question not found', 404);

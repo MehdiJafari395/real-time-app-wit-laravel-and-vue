@@ -17,7 +17,7 @@ class ReplyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'bodi' => $this->body,
+            'body' => $this->body,
             'question' => new QuestionResource($this->question),
             'user' => new UserResource($this->user),
             'created_at' => Carbon::parse($this->created_at)->diffForHumans(),
